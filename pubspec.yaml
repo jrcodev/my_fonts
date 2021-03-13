@@ -1,0 +1,28 @@
+name: my_fonts
+description: A new Flutter project.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  archive: ^3.1.2
+  bloc: 7.0.0-nullsafety.3
+  cupertino_icons: ^1.0.2
+  dartz: 0.10.0-nullsafety.1
+  flutter_bloc: 7.0.0-nullsafety.3
+  get_it: ^6.0.0
+  web_scraper: ^0.1.4
+  rxdart: ^0.26.0
+  http: ^0.13.0
+  path_provider: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
