@@ -15,7 +15,6 @@ class BaseUrl {
       }
     });
     var query = Uri(queryParameters: params).query;
-    print(query);
     return '/search.php?$query';
   }
 

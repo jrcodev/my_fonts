@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_fonts/app/external/font_repository.dart';
 import 'package:my_fonts/app/models/font.dart';
 import 'package:my_fonts/app/pages/home/widgets/highlight_text_widget.dart';
 
@@ -18,7 +20,17 @@ class FontListTileWidget extends StatelessWidget {
             children: [
               IconButton(
                 icon: Icon(Icons.download_rounded),
-                onPressed: () {},
+                onPressed: () async {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text("Downloading...")));
+                  final result =
+                      await GetIt.I.get<FontRepository>().save(font: font);
+
+                  ScaffoldMessenger.of(context).showSnackBar(result.fold(
+                    (_) => SnackBar(content: Text("An error has occurred!")),
+                    (_) => SnackBar(content: Text("Font installed")),
+                  ));
+                },
                 tooltip: "Download",
               ),
               Column(

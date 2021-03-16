@@ -1,3 +1,4 @@
+import 'package:archive/archive_io.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_fonts/app/data/font_datasource.dart';
 import 'package:my_fonts/app/data/font_storage.dart';
@@ -9,7 +10,7 @@ import 'package:my_fonts/app/pages/home/cubits/search_cubit.dart';
 
 void inject() {
   GetIt.I.registerSingleton<FontDatasource>(DafontDatasource());
-  GetIt.I.registerSingleton<FontStorage>(LinuxFontStorage());
+  GetIt.I.registerSingleton<FontStorage>(LinuxFontStorage(ZipDecoder()));
   GetIt.I.registerSingleton(
     FontRepository(
         datasource: GetIt.I.get<FontDatasource>(),

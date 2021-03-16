@@ -32,10 +32,10 @@ class FontRepository {
     }
   }
 
-  Future<Either<Exception, void>> save({required Font font}) async {
+  Future<Either<Exception, bool>> save({required Font font}) async {
     try {
-      final result = await storage.save(font: font);
-      return right(result);
+      await storage.save(font: font);
+      return right(true);
     } on Exception {
       return left(Exception());
     }
