@@ -11,5 +11,9 @@ void main() {
     // data.forEach((element) {
     //   print(element);
     // });
+    final v = Platform.environment['HOMEPATH'];
+    final path = "C:$v\\AppData\\Local\\Microsoft\\Windows\\Fonts";
+
+    File("$path\\test.ttf").create(recursive: true);
   });
 }

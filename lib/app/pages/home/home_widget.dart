@@ -22,9 +22,7 @@ class HomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Fonts'),
-      ),
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         child: Column(
@@ -33,9 +31,11 @@ class HomeWidget extends StatelessWidget {
               children: [
                 Expanded(
                     child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: TextField(
                     controller: textController,
+                    decoration: InputDecoration(border: OutlineInputBorder()),
                     onSubmitted: (text) {
                       GetIt.I.get<SearchCubit>().search(text);
                     },
@@ -51,6 +51,7 @@ class HomeWidget extends StatelessWidget {
                 )
               ],
             ),
+            const Divider(),
             Expanded(
               child: BlocBuilder(
                 bloc: GetIt.I.get<FetchBloc>(),
@@ -67,25 +68,28 @@ class HomeWidget extends StatelessWidget {
                     final fonts = state.fonts;
                     final highlight = state.highlight;
                     return state.hasResults
-                        ? ListView.builder(
+                        ? Scrollbar(
                             controller: _scrollController,
-                            itemCount: state.hasReachedMax
-                                ? fonts.length
-                                : fonts.length + 1,
-                            itemBuilder: (_, index) {
-                              if (index >= fonts.length) {
-                                return Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircularProgressIndicator(),
-                                ));
-                              } else {
-                                return FontListTileWidget(
-                                  font: fonts.elementAt(index),
-                                  highlight: highlight,
-                                );
-                              }
-                            })
+                            child: ListView.builder(
+                                controller: _scrollController,
+                                itemCount: state.hasReachedMax
+                                    ? fonts.length
+                                    : fonts.length + 1,
+                                itemBuilder: (_, index) {
+                                  if (index >= fonts.length) {
+                                    return Center(
+                                        child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CircularProgressIndicator(),
+                                    ));
+                                  } else {
+                                    return FontListTileWidget(
+                                      font: fonts.elementAt(index),
+                                      highlight: highlight,
+                                    );
+                                  }
+                                }),
+                          )
                         : Center(
                             child: Text("No results."),
                           );

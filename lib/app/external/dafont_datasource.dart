@@ -34,12 +34,14 @@ class DataExtraction {
   List<Font> call({required WebScraper scraper, int page = 1}) {
     final indexes = scraper.getElement(indexesSelector, []);
 
-    if (indexes.isNotEmpty) {
+    try {
       final index = indexes.lastWhere(
           (element) => element['title'].toString().isNotEmpty)['title'];
       if (page > int.parse(index)) {
         return <Font>[];
       }
+    } on Exception {
+      return <Font>[];
     }
 
     final links = scraper

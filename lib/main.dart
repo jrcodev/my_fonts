@@ -8,5 +8,6 @@ import 'app/app_widget.dart';
 void main() {
   inject();
   Bloc.observer = Observer();
+
   runApp(AppWidget());
 }
