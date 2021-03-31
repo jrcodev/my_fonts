@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:http/http.dart';
 import 'package:web_scraper/web_scraper.dart';
 
 import 'package:my_fonts/app/data/font_datasource.dart';
@@ -31,16 +34,20 @@ class DataExtraction {
   final infoSelector = 'span.light';
 
   List<Font> call({required WebScraper scraper, int page = 1}) {
-    final indexes = scraper.getElement(indexesSelector, []);
-
-    try {
-      final index = indexes.lastWhere(
-          (element) => element['title'].toString().isNotEmpty)['title'];
-      if (page > int.parse(index)) {
+    if (page > 1) {
+      final indexes = scraper.getElement(indexesSelector, []);
+      try {
+        final index = indexes.lastWhere(
+                (element) =>
+            element['title']
+                .toString()
+                .isNotEmpty)['title'];
+        if (page > int.parse(index)) {
+          return <Font>[];
+        }
+      } on Exception {
         return <Font>[];
       }
-    } on Exception {
-      return <Font>[];
     }
 
     final links = scraper
@@ -62,14 +69,21 @@ class DataExtraction {
     final infos = scraper
         .getElement(infoSelector, [])
         .map((map) => map['title'])
-        .map((info) => info.split("(").first.trim())
+        .map((info) =>
+        info
+            .split("(")
+            .first
+            .trim())
         .toList();
 
     return List.generate(links.length, (i) {
       var title = titles[i];
       final List<String> titleAuthorSplit = title.split('by');
       var fontTitle =
-          titleAuthorSplit[0].toString().split(RegExp(r'[à€]')).first;
+          titleAuthorSplit[0]
+              .toString()
+              .split(RegExp(r'[à€]'))
+              .first;
 
       var author;
 
@@ -92,9 +106,11 @@ class DataExtraction {
 
 class ExtractedDataFormat {
   final https = 'https:';
+
   List<Font> call(List<Font> fonts) {
     return fonts
-        .map((font) => font.copyWith(
+        .map((font) =>
+        font.copyWith(
             link: https + font.link,
             preview: font.preview.startsWith('//')
                 ? https + font.preview
@@ -110,8 +126,7 @@ class DafontDatasource implements FontDatasource {
   late final scraper = WebScraper(query.baseUrl);
 
   @override
-  Future<List<Font>> search(
-    String font, {
+  Future<List<Font>> search(String font, {
     String? previewText,
     int? page,
     int? quantity,
@@ -132,5 +147,11 @@ class DafontDatasource implements FontDatasource {
     } else {
       throw Exception();
     }
+  }
+
+  @override
+  Future<Font> download({required Font font}) async {
+    final response = await get(Uri.parse(font.link));
+    return font.copyWith(bytes: response.bodyBytes);
   }
 }

@@ -9,4 +9,6 @@ abstract class FontDatasource {
     int? quantity,
     FontSize? size,
   });
+
+  Future<Font> download({required Font font});
 }

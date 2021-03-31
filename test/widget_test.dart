@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -9,7 +11,7 @@ void main() {
     // });
     final v = Platform.environment['HOMEPATH'];
     final path = "C:$v\\AppData\\Local\\Microsoft\\Windows\\Fonts";
-
-    File("$path\\test.ttf").create(recursive: true);
+    print(path);
+    //File("$path\\test.ttf").create(recursive: true);
   });
 }

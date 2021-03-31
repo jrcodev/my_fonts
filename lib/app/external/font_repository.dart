@@ -34,7 +34,8 @@ class FontRepository {
 
   Future<Either<Exception, bool>> save({required Font font}) async {
     try {
-      await storage.save(font: font);
+      final downloaded = await datasource.download(font: font);
+      await storage.save(font: downloaded);
       return right(true);
     } on Exception {
       return left(Exception());
