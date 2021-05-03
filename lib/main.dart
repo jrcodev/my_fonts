@@ -6,8 +6,8 @@ import 'package:my_fonts/app/utils/observer.dart';
 import 'app/app_widget.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   inject();
   Bloc.observer = Observer();
-
   runApp(AppWidget());
 }

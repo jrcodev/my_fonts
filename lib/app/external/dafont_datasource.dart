@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:http/http.dart';
 import 'package:web_scraper/web_scraper.dart';
 
@@ -38,14 +36,11 @@ class DataExtraction {
       final indexes = scraper.getElement(indexesSelector, []);
       try {
         final index = indexes.lastWhere(
-                (element) =>
-            element['title']
-                .toString()
-                .isNotEmpty)['title'];
+            (element) => element['title'].toString().isNotEmpty)['title'];
         if (page > int.parse(index)) {
           return <Font>[];
         }
-      } on Exception {
+      } on StateError {
         return <Font>[];
       }
     }
@@ -69,21 +64,14 @@ class DataExtraction {
     final infos = scraper
         .getElement(infoSelector, [])
         .map((map) => map['title'])
-        .map((info) =>
-        info
-            .split("(")
-            .first
-            .trim())
+        .map((info) => info.split("(").first.trim())
         .toList();
 
     return List.generate(links.length, (i) {
       var title = titles[i];
       final List<String> titleAuthorSplit = title.split('by');
       var fontTitle =
-          titleAuthorSplit[0]
-              .toString()
-              .split(RegExp(r'[à€]'))
-              .first;
+          titleAuthorSplit[0].toString().split(RegExp(r'[à€]')).first;
 
       var author;
 
@@ -109,8 +97,7 @@ class ExtractedDataFormat {
 
   List<Font> call(List<Font> fonts) {
     return fonts
-        .map((font) =>
-        font.copyWith(
+        .map((font) => font.copyWith(
             link: https + font.link,
             preview: font.preview.startsWith('//')
                 ? https + font.preview
@@ -126,7 +113,8 @@ class DafontDatasource implements FontDatasource {
   late final scraper = WebScraper(query.baseUrl);
 
   @override
-  Future<List<Font>> search(String font, {
+  Future<List<Font>> search(
+    String font, {
     String? previewText,
     int? page,
     int? quantity,
